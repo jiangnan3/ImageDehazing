@@ -4,7 +4,7 @@
  //  OpenCVExample
  //
  //  Created by Jiangnan Li on 10/18/16.
- //  Copyright © 2016 Jiangnan Li. All rights reserved.
+ //  Copyright Â© 2016 Jiangnan Li. All rights reserved.
  //
  
 #include <iostream>
@@ -115,7 +115,6 @@ int Sum_BGR(Mat * a, int row, int col)
     return sum;
 }
 
-
 Pixel * Get_Airlight(Mat * Image)
 {
     void Find_DarkChannel (Mat * RGB, Mat * DarkChannel);
@@ -189,7 +188,6 @@ int ** get_IA(Mat * image, Pixel * Airlight)  // IA is a array[3], IA[0] stores 
     }
     return IA;
 }
-
 
 float ** Rectangle2Sphere( int ** rect , Mat * image) //IA transfer Rectangle Coordinate to Sphere, rect[0]
 {                                                     //  is a pointer to a matrix correspond with IA function
@@ -298,7 +296,6 @@ void KdtreeErgodic(KdtreeNode * root, vector<KdtreeNode *> &tree)     //???????
     }
 }
 
-
 vector<KdtreeNode *> * cluster_Hazeline(KdtreeNode * root, int dep) // reture a vector of node with depth (int dep) in a tree root by (KdtreeNode * root)
 {
     vector<KdtreeNode *> wholetree;
@@ -355,7 +352,6 @@ int * rmax_show(int * rmax, vector<KdtreeNode*>& line, Mat * image) //show rmax
     }
 
     imshow("rmax", Rmax_Image);
-//    imwrite("/Users/jiangnan/Desktop/rmax.png", Rmax_Image);
     return 0;
 }
 
@@ -372,8 +368,7 @@ int * concentrate(vector<KdtreeNode*>& line, Mat * image) //input the treeline, 
             concentrated_image.at<Vec3b>(i,j)[2] = (*image).at<Vec3b>(i,j)[2];
         }
     }  // creat a new image same as input image
-    
-    
+        
     vector<KdtreeNode*> concentration;
     
     for(vector<KdtreeNode*>::iterator temp = line.begin(); temp!=line.end(); temp++) // clusters
@@ -410,7 +405,7 @@ int * concentrate(vector<KdtreeNode*>& line, Mat * image) //input the treeline, 
         temp2++;
     }
     imshow("concentration", concentrated_image);
-//    imwrite("/Users/jiangnan/Desktop/concentration.png", concentrated_image);
+//    imwrite("concentration.png", concentrated_image);
     return 0;
 }
 //----------------------------End of Concentrate Function---------------------------------------------
@@ -419,8 +414,7 @@ int * concentrate(vector<KdtreeNode*>& line, Mat * image) //input the treeline, 
 //-------------------------------------------------------------------------
 
 float * get_tLB(vector <KdtreeNode*>& RootofClusters, int * rmax, Mat * image, Pixel * airlight)
-{
-    
+{    
     float * tLB = new float[(*image).rows * (*image).cols];
     for(int i = 0; i < (*image).rows ; i++)
     {
@@ -486,7 +480,6 @@ Mat *  getJx (Mat * Ix, float * tLB, vector <KdtreeNode*> &treelines, Pixel * ai
 
         }
     }
-    //    imwrite("/Users/jiangnan/Desktop/output.png", *JxOutput);
     return JxOutput;
 }
 
@@ -530,7 +523,6 @@ void Show_Partial_Clusters(Mat * Haze, vector<KdtreeNode*> &Hazeline, int min, i
         }
     }
     imshow("several_cluster", test);
-//    imwrite("/Users/jiangnan/Desktop/Partial_clusters_8000.png", test);
 }
 
 
@@ -547,12 +539,6 @@ int show_transmission_map(float * tLB, Mat * Image)
     imshow("transmission_map", transmission_map);
     
     Mat Pseudocolor_transmission_map;
-    //    imwrite("/Users/jiangnan/Desktop/transmission_map.png", transmission_map);
-    
-    //    applyColorMap(transmission_map, Pseudocolor_transmission_map, COLORMAP_JET);
-    //    imshow("Pseudocolor_transmission_map", Pseudocolor_transmission_map);
-    
-    //    imwrite("/Users/jiangnan/Desktop/Pseudocolor_transmission_map.png", Pseudocolor_transmission_map);
     return 0;
 }
 
@@ -604,9 +590,7 @@ int show_rx(Mat * Haze, float ** sphereC)
             example_Rx.at<uchar>(i,j) = (int)(255 * ( (sphereC[0])[i*((*Haze).cols)+j] ) / max );
         }
     }
-    imshow("Rx", example_Rx);
-    //    imwrite("/Users/jiangnan/Desktop/Rx.png", example_Rx);
-    
+    imshow("Rx", example_Rx);   
     return 0;
 }
 
@@ -620,7 +604,6 @@ void show_airlight( Pixel * Haze_airlight)
             example_airlight.at<Vec3b>(i,j)[0] = Haze_airlight->get_blue();
             example_airlight.at<Vec3b>(i,j)[1] = Haze_airlight->get_green();
             example_airlight.at<Vec3b>(i,j)[2] = Haze_airlight->get_red();
-
         }
     }
     cout << Haze_airlight->get_blue() << endl;
@@ -644,22 +627,8 @@ float * blured_tLB(float * tLB, Mat * Image)
     }
     
     Mat Output;
-    
-//    boxFilter( transmission_map, Output, -1, Size(30, 45),Point(-1,-1),true);
-//    imshow("Output_Boxfilter", Output_Boxfilter);
-    
-//    blur(transmission_map, Output, Size(3, 3));
-//    imshow("Output_Normalized_Boxfilter", Output );
-
     medianBlur(transmission_map, Output, 5);
-//    imshow("Output_Medianfilter", Output);
-    
-//    GaussianBlur(transmission_map, Output, Size(3, 3), 0, 0);
-//    imshow("Output_Gaussianfilter", Output);
-    
-//    bilateralFilter(transmission_map, Output, 10, 10 * 2, 10 / 2);
-//    imshow("Output_BilateralFilter", Output);
-    
+
     for (int i = 0; i <= ((*Image).rows)-1; i++)
     {
         for (int j = 0; j <= ((*Image).cols)-1; j++)
@@ -685,15 +654,6 @@ int nonlocal_image_dehazing(Mat * Input_Image, float Airlight_Ajust, int filter,
     }
     imshow("Input_Image", Haze);
     
-    //    for(int i = 0; i < Haze.rows ; i++)
-    //    {
-    //        for(int j= 0; j < Haze.cols ; j++)
-    //        {
-    //            cout << (int)Haze.at<Vec3b>(i,j)[0] << "\t" << (int)Haze.at<Vec3b>(i,j)[1] << "\t" << (int)Haze.at<Vec3b>(i,j)[2] << endl;
-    //        }
-    //        cout<< endl << endl << endl;
-    //    }
-    
     Pixel * Haze_airlight;
     Haze_airlight = Get_Airlight(&Haze);
     float xxx = Airlight_Ajust ;
@@ -702,19 +662,8 @@ int nonlocal_image_dehazing(Mat * Input_Image, float Airlight_Ajust, int filter,
     show_airlight( Haze_airlight );
     //    cout << (*Haze_airlight).get_blue() << "\t" << (*Haze_airlight).get_green() << "\t" << (*Haze_airlight).get_red() << endl;
     
-    int ** IA = get_IA(&Haze, Haze_airlight);
-    
-    //    for(int i = 0; i < Haze.rows ; i++)
-    //    {
-    //        for(int j= 0; j < Haze.cols ; j++)
-    //        {
-    //            cout << (IA[0])[i * Haze.cols +j] << "\t" << (IA[1])[i * Haze.cols +j] << "\t" << (IA[2])[i * Haze.cols +j] << "\t" << endl;
-    //        }
-    //        cout<< endl << endl << endl;
-    //    }
-    
+    int ** IA = get_IA(&Haze, Haze_airlight);    
     float ** sphereC = Rectangle2Sphere(IA, &Haze);  //    function to show rx :   show_rx( &Haze, sphereC);
-//    show_rx( &Haze, sphereC);
     
     struct KdtreeNode * Haze_tree;
     Haze_tree = BuildKdtree(sphereC, &Haze);   // Haze_tree is the pointer to the tree's rooter
@@ -762,7 +711,7 @@ int main(int argc, char * argv[])
     // lviv_input.jpg, 0.55, 0, 1000;
     // train_input.png, 0.55, 1, 1000;
     // farm.jpg, 0.55, 0, 1000;
-    Mat Hazy_Image = imread("/Users/jiangnan/Desktop/Haze.png");
+    Mat Hazy_Image = imread("Haze.png");
     nonlocal_image_dehazing(&Hazy_Image, 1, 0, 1000);
     return 0;
 }
